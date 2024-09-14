@@ -1,0 +1,109 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Where is my money
+servers:
+  - url: /api/v1
+paths:
+  /movement:
+    post:
+      summary: Create a movement
+      operationId: createMovement
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movement'
+        required: true
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      summary: Get all movements
+      operationId: getAllMovement
+      responses:
+        '200':
+          description: get movements
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListMovements"
+  /movement/{year}/{month}:
+    get:
+      summary: Get all the movements by year and month
+      operationId: getMovementsByYearAndMonth
+      parameters:
+        - name: year # must match path variable
+          in: path
+          description: ID of pet to use
+          required: true # path parameters must always be required
+          schema:
+            type: string
+          example: 2025
+        - name: month # must match path variable
+          in: path
+          required: true # path parameters must always be required
+          schema:
+            type: string
+          example: 5
+      responses:
+        '200':
+          description: get movements
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListMovements"
+
+components:
+  schemas:
+    Movement:
+      type: object
+      required:
+        - quantity
+        - reason
+        - subreason
+        - necessary
+        - dateMovement
+      properties:
+        reason:
+          $ref: "#/components/schemas/TypeMovement"
+        necessary:
+          type: boolean
+        quantity:
+          type: double
+        subreason:
+          type: string
+        dateCreation:
+          type: dateTime
+        dateMovement:
+          type: dateTime
+    TypeMovement:
+      enum:
+        - TRABAJO
+        - OCIO
+        - SALUD
+        - CAPRICHO
+        - INVERSION
+        - DEPORTE
+        - COMIDA
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    ListMovements:
+      type: array
+      items:
+        $ref: "#/components/schemas/Movement"
