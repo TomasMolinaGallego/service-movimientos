@@ -35,4 +35,3 @@ Es un projecto pensado para ser un micro servicio que será utilizado por un fro
 
 ## Agradecimientos
 Muchas gracias por haber leido hasta aquí, cualquier problema, sugerencia o aporte será bienvenido.
-![Gatito de despedida](https://kindpng.com/imgv/iTmmTom_cat-cute-and-kawaii-image-pixel-art-cat/)
