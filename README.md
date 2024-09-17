@@ -2,6 +2,9 @@
 Este servicio movimientos surgió de la necesidad de tener una herramienta por la cual poder controlar los gastos e ingresos y poder visualizarlos claramente, cosa que las aplicaciones con el banco dejan mucho que desear, así que dije, ¿por qué no hacer yo mismo una aplicación para poder verlo como quiera?
 ## Uso y despliege
 Para cualquiera de las opciones, hace falta tener una base de datos mariadb conectada al puerto 3306 con un schema que se llame "wheredidmymoneygo" (pendiente de simplificar).
+
+Cambiar usuario y contraseña correspondientes de la base de datos en el application.properties
+
 ### Usarse como standalone
 Si se desea usar este servicio, ya sea mediante directamente llamadas API o crearle una interfaz de usuario propia, simplemente ejecutar:
 ```
