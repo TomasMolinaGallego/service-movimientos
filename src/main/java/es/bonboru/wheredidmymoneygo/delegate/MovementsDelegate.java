@@ -51,5 +51,24 @@ public class MovementsDelegate implements MovementApi {
         return ResponseEntity.ok(movementsService.getMovementsByYearAndMonth(year, month));
     }
 
+    @PutMapping("/movement")
+    @Override
+    public ResponseEntity<Movement> updateMovement(Movement movement){
+        log.info("A request to update the movement: {} has arrived", movement.getId());
+        Movement mvt = movementsService.updateMovement(movement);
+        if (mvt != null){
+            return ResponseEntity.ok(mvt);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/movement/{id}")
+    @Override
+    public ResponseEntity<Void> deleteMovement(@PathVariable String id){
+        log.info("A request to delete the movement: {} has arrived", id);
+        movementsService.deleteMovement(Long.getLong(id));
+        return ResponseEntity.ok().build();
+    }
+
 
 }

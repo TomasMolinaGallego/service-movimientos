@@ -5,6 +5,7 @@ import es.bonboru.wheredidmymoneygo.model.Movement;
 import es.bonboru.wheredidmymoneygo.model.MovementEntity;
 import es.bonboru.wheredidmymoneygo.model.TypeMovement;
 import es.bonboru.wheredidmymoneygo.repositories.MovementsRepository;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovementsServiceImpl {
@@ -20,8 +22,11 @@ public class MovementsServiceImpl {
 
     private static final Logger log = LoggerFactory.getLogger(MovementsServiceImpl.class);
 
+    private final ModelMapper modelMapper;
+
     @Autowired
-    public MovementsServiceImpl(MovementsRepository movementsRepository){
+    public MovementsServiceImpl(MovementsRepository movementsRepository, ModelMapper modelMapper){
+        this.modelMapper = modelMapper;
         this.movementsRepository = movementsRepository;
     }
 
@@ -47,6 +52,23 @@ public class MovementsServiceImpl {
         return movementsRepository.findByYearAndMonth(year, month).stream().map(this::movementEntityToMovement).toList();
     }
 
+    public Movement updateMovement(Movement movementUpdated){
+        Optional<MovementEntity> oldMvtList = movementsRepository.findById(movementUpdated.getId());
+        if(oldMvtList.isPresent()){
+            MovementEntity oldMvt = oldMvtList.get();
+            modelMapper.map(movementUpdated, oldMvt);
+            log.info("Movement {} updated.", movementUpdated.getId());
+            return movementEntityToMovement(movementsRepository.save(oldMvt));
+        }
+        log.info("Movement {} not found.", movementUpdated.getId());
+        return null;
+    }
+
+    public void deleteMovement(Long id){
+        log.info("Movement {} deleted.", id);
+        movementsRepository.deleteById(id);
+    }
+
 
     private MovementEntity movementToMovementEntity(Movement movement) throws IllegalArgumentException{
         MovementEntity mvn = new MovementEntity();
@@ -67,6 +89,7 @@ public class MovementsServiceImpl {
         mvn.setSubreason(movement.getSubReason());
         mvn.setQuantity(movement.getQuantity());
         mvn.setNecessary(movement.getNecessary());
+        mvn.setId(movement.getId());
         return mvn;
     }
 }

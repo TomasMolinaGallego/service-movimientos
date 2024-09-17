@@ -22,11 +22,11 @@ initApp.bat
 Si se ejecuta todo correctamente, el frontend debería de estar ejecutándose en localhost:4200
 
 ## Detalles técnicos
-Micro servicio para gestionar los "movimientos", los cuales son los objetos del servicio para representar las transacciones monetarias. Cuenta con las funcionalidades básicas para registrar y recuperar mediante API los movimientos (modificaciones y eliminaciones en desarrollo).
+Micro servicio para gestionar los "movimientos", los cuales son los objetos del servicio para representar las transacciones monetarias. Cuenta con las funcionalidades básicas para registrar, recuperar, modificar y eliminar movimientos mediante así como búsquedas más específicas como movimientos por mes y año, mediante llamadas API.
 
-El contrato de interfaz se encuentra en api.yml donde estarán todas las rutas disponibles en el servicio.
+El contrato de interfaz se encuentra en api.yml donde estarán todas las rutas disponibles y el qué deben de recibir así como enviar desde el servicio.
 
-Desarrollado con Java 17 junto a Spring Boot y base de datos en MariaDB.
+Desarrollado con Java 17 junto a Spring Boot y base de datos en MySQL.
 
 Es un projecto pensado para ser un micro servicio que será utilizado por un front hecho en el repositorio, pero a libre disposición de modificar o crearle uno nuevo. 
 

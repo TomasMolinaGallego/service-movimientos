@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   version: 1.0.0
-  title: Where is my money
+  title: Where did my money go
 servers:
   - url: /api/v1
 paths:
@@ -16,14 +16,8 @@ paths:
               $ref: '#/components/schemas/Movement'
         required: true
       responses:
-        '201':
-          description: Null response
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+        '200':
+          description: Ok
     get:
       summary: Get all movements
       operationId: getAllMovement
@@ -34,21 +28,38 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ListMovements"
+    put:
+      summary: Update a movement
+      operationId: updateMovement
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movement'
+        required: true
+      responses:
+        '200':
+          description: Movement updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movement"
+        '404':
+          description: Movement not found
   /movement/{year}/{month}:
     get:
       summary: Get all the movements by year and month
       operationId: getMovementsByYearAndMonth
       parameters:
-        - name: year # must match path variable
+        - name: year
           in: path
-          description: ID of pet to use
-          required: true # path parameters must always be required
+          required: true
           schema:
             type: string
           example: 2025
-        - name: month # must match path variable
+        - name: month
           in: path
-          required: true # path parameters must always be required
+          required: true
           schema:
             type: string
           example: 5
@@ -59,6 +70,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ListMovements"
+  /movement/{id}:
+    delete:
+      summary: Delete a movement
+      operationId: deleteMovement
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Movement deleted
 
 components:
   schemas:
@@ -70,6 +94,7 @@ components:
         - subreason
         - necessary
         - dateMovement
+        - id
       properties:
         reason:
           $ref: "#/components/schemas/TypeMovement"
@@ -83,6 +108,8 @@ components:
           type: dateTime
         dateMovement:
           type: dateTime
+        id:
+          type: long
     TypeMovement:
       enum:
         - TRABAJO

@@ -7,6 +7,7 @@ import es.bonboru.wheredidmymoneygo.web.impl.MovementsServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,11 +17,14 @@ class MovementServiceImplTest {
     @Autowired
     private MovementsRepository movementsRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     private MovementsServiceImpl movementsService;
 
     @BeforeEach
     void init(){
-        movementsService = new MovementsServiceImpl(movementsRepository);
+        movementsService = new MovementsServiceImpl(movementsRepository, modelMapper);
     }
 
     @Test
